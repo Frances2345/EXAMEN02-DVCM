@@ -18,6 +18,13 @@ public class EnemyIA : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (target != null)
+        {
+            agent.destination = target.position;
+        }
+    }
     public void ExplodeEnemy()
     {
         if (ExplosionEffect != null)
@@ -31,36 +38,14 @@ public class EnemyIA : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Mencho Murio");
+            Debug.Log("C murio :v");
             Destroy(gameObject);
         }
     }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            if (target != null)
-            {
-                agent.destination = target.position;
-            }
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-
-        }
-    }
-
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
-
-        Gizmos.color = Color.yellow;
     }
 }

@@ -28,7 +28,7 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "6c2ab1b8-8984-453a-af3d-a3c78ae1679a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -109,6 +109,15 @@
                     "name": "SpawnTurret",
                     "type": "Button",
                     "id": "0c8dff59-072a-468a-8fee-ba196bd11aa2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ThrowGranade",
+                    "type": "Button",
+                    "id": "db750c8b-2429-4db8-8e43-d70a5868789e",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -553,6 +562,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "SpawnTurret",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f6414c87-4bae-4d53-88d8-f1887e352f6d",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrowGranade",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

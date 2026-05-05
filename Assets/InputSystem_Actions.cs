@@ -114,7 +114,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""6c2ab1b8-8984-453a-af3d-a3c78ae1679a"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -195,6 +195,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""SpawnTurret"",
                     ""type"": ""Button"",
                     ""id"": ""0c8dff59-072a-468a-8fee-ba196bd11aa2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ThrowGranade"",
+                    ""type"": ""Button"",
+                    ""id"": ""db750c8b-2429-4db8-8e43-d70a5868789e"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -639,6 +648,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""SpawnTurret"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6414c87-4bae-4d53-88d8-f1887e352f6d"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ThrowGranade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1238,6 +1258,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Aim = m_Player.FindAction("Aim", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_SpawnTurret = m_Player.FindAction("SpawnTurret", throwIfNotFound: true);
+        m_Player_ThrowGranade = m_Player.FindAction("ThrowGranade", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1343,6 +1364,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Aim;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_SpawnTurret;
+    private readonly InputAction m_Player_ThrowGranade;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1402,6 +1424,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/SpawnTurret".
         /// </summary>
         public InputAction @SpawnTurret => m_Wrapper.m_Player_SpawnTurret;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ThrowGranade".
+        /// </summary>
+        public InputAction @ThrowGranade => m_Wrapper.m_Player_ThrowGranade;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1464,6 +1490,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SpawnTurret.started += instance.OnSpawnTurret;
             @SpawnTurret.performed += instance.OnSpawnTurret;
             @SpawnTurret.canceled += instance.OnSpawnTurret;
+            @ThrowGranade.started += instance.OnThrowGranade;
+            @ThrowGranade.performed += instance.OnThrowGranade;
+            @ThrowGranade.canceled += instance.OnThrowGranade;
         }
 
         /// <summary>
@@ -1511,6 +1540,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @SpawnTurret.started -= instance.OnSpawnTurret;
             @SpawnTurret.performed -= instance.OnSpawnTurret;
             @SpawnTurret.canceled -= instance.OnSpawnTurret;
+            @ThrowGranade.started -= instance.OnThrowGranade;
+            @ThrowGranade.performed -= instance.OnThrowGranade;
+            @ThrowGranade.canceled -= instance.OnThrowGranade;
         }
 
         /// <summary>
@@ -1895,6 +1927,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSpawnTurret(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ThrowGranade" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnThrowGranade(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

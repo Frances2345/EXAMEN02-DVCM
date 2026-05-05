@@ -51,7 +51,9 @@ public class ThirdPersonController : MonoBehaviour
     public LineRenderer Rayprefab;
     public Transform WeaponShootAnchor;
     public GameObject CannonPrefab;
+    public GameObject GranadePrefab;
     public Transform CannonSpawnPoint;
+    public float throwForce;
 
     Vector3 normalDebug;
     Vector3 impactPoint;
@@ -72,6 +74,8 @@ public class ThirdPersonController : MonoBehaviour
     {
         inputs.Enable();
         inputs.Player.SpawnTurret.performed += SpawnCannon;
+
+        inputs.Player.ThrowGranade.started += ctx => ThrowSmt();
 
         inputs.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputs.Player.Move.canceled += ctx => moveInput = Vector2.zero;
@@ -112,6 +116,16 @@ public class ThirdPersonController : MonoBehaviour
         Instantiate(CannonPrefab, CannonSpawnPoint.position, CannonSpawnPoint.rotation);
     }
 
+    private void ThrowSmt()
+    {
+        GameObject granade = Instantiate(GranadePrefab, transform.position, Quaternion.identity);
+        Vector3 dir = characterCamera.transform.forward;
+
+        granade.GetComponent<Rigidbody>().AddForce(dir * throwForce, ForceMode.Impulse);
+
+        if (granade == null) return;
+    }
+
     public void OnMove()
     {
         Vector3 cameraForwardDir = characterCamera.transform.forward;
@@ -125,7 +139,6 @@ public class ThirdPersonController : MonoBehaviour
             {
                 if (!walking.isPlaying) walking.Play();
                 Quaternion targetQuaternion = Quaternion.LookRotation(cameraForwardDir);
-                //transform.rotation = targetQuaternion;
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetQuaternion, rotationSpeed * Time.deltaTime);
             }
             else
@@ -199,11 +212,7 @@ public class ThirdPersonController : MonoBehaviour
          
             if (impactParticlesPrefab != null)
             {               
-                ParticleSystem impact = Instantiate(
-                    impactParticlesPrefab,
-                    hit.point,
-                    Quaternion.LookRotation(hit.normal)
-                );
+                ParticleSystem impact = Instantiate( impactParticlesPrefab, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(impact.gameObject, 2f);
             }
         }
@@ -214,9 +223,7 @@ public class ThirdPersonController : MonoBehaviour
             line.SetPosition(1, ray.origin + ray.direction * 100);
             Destroy(line.gameObject, lineDuration);
         }
-
     }
-
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         Vector3 pushDir = (hit.transform.position - transform.position).normalized;

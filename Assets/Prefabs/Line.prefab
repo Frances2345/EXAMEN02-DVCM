@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1882541592716894177}
   - component: {fileID: 7316038784959786288}
+  - component: {fileID: 7129762339435827458}
   m_Layer: 0
   m_Name: Line
   m_TagString: Untagged
@@ -142,3 +143,17 @@ LineRenderer:
   m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &7129762339435827458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889372117063366484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 337ce6dd402051b4f82a9938b3cd7813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  radiuslaser: 0.1
+  ExplossionGranade: {fileID: 100748, guid: cd4d7020429cde74db076ffa72495419, type: 3}

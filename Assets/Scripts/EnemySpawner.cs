@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -36,16 +37,18 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
-
+    [Button]
     public void SpawnEnemy()
     {
         GameObject obj = Instantiate(EnemyPrefab, transform);
 
         Vector3 origin = transform.position;
         Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-        Vector3 FinalPosition = origin + dir * Random.Range(0, range);
+        Vector3 FinalPosition = origin +( dir * Random.Range(0, range));
 
         obj.transform.position = FinalPosition;
+
+
     }
 
     public void OnTriggerEnter(Collider other)
