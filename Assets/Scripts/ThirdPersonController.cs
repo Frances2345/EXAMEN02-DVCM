@@ -7,74 +7,56 @@ using Sirenix.OdinInspector;
 
 public class ThirdPersonController : MonoBehaviour
 {
-    [FoldoutGroup("References")]
+    [Header ("References")]
     public InputSystem_Actions inputs;
-    [FoldoutGroup("References")]
     private CharacterController controller;
-    [FoldoutGroup("References")]
     public CinemachineCamera characterCamera;
-    [FoldoutGroup("References")]
     public CinemachineCamera characterAimCamera;
-    [FoldoutGroup("References")]
-  //  public Animator animator;
 
-
-    [FoldoutGroup("Controller")]
+    [Header ("Controller")]
     public float moveSpeed = 5f;
-    [FoldoutGroup("Controller")]
     public float sprintMultiplier = 3f;
-    [FoldoutGroup("Controller")]
     public float rotationSpeed = 200f;
-    [FoldoutGroup("Controller")]
     public float verticalVelocity = 0;
-    [FoldoutGroup("Controller")]
     public float jumpForce = 10;
-    [FoldoutGroup("Controller")]
     public float pushForce = 4;
 
-    [FoldoutGroup("Controller/Dash")]
+    [Header ("Dash")]
     private bool IsDashing;
-    [FoldoutGroup("Controller/Dash")]
     public float dashForce;
-    [FoldoutGroup("Controller/Dash")]
     public float dashDuration = 0.2f;
-    [FoldoutGroup("Controller/Dash")]
     private float dashTimer;
-    [FoldoutGroup("Controller/Animator"), SerializeField]
+
+    [Header ("Controller/Animator"), SerializeField]
     private CinemachineImpulseSource source;
 
     [SerializeField] private Vector2 moveInput;
     private bool isSprinting;
 
-    public ParticleSystem walking;
-    public ParticleSystem weaponShoot;
-    public ParticleSystem muzzleFlash;
-
-    [FoldoutGroup("WallRun")]
+    [Header ("WallRun")]
     public float rayLenght;
-    [FoldoutGroup("WallRun")]
     public float cameraTitlt = 15;
-    [FoldoutGroup("WallRun")]
     public float maxTimeInAir;
-    [FoldoutGroup("WallRun")]
     public bool enableWallRun;
 
     public bool aimMode = false;
 
-    Vector3 normalDebug;
-    Vector3 impactPoint;
-    Vector3 crossResult;
+    [Header ("FX")]
+    public ParticleSystem impactParticlesPrefab; 
+    public float lineDuration = 0.05f;
+    public ParticleSystem walking;
+    public ParticleSystem weaponShoot;
+    public ParticleSystem muzzleFlash;
 
     public LineRenderer Rayprefab;
     public Transform WeaponShootAnchor;
     public GameObject CannonPrefab;
     public Transform CannonSpawnPoint;
 
+    Vector3 normalDebug;
+    Vector3 impactPoint;
+    Vector3 crossResult;
 
-    [FoldoutGroup("FX")]
-    public ParticleSystem impactParticlesPrefab; 
-    [FoldoutGroup("FX")]
-    public float lineDuration = 0.05f;
     private void Awake()
     {
         inputs = new();
@@ -123,7 +105,6 @@ public class ThirdPersonController : MonoBehaviour
     {
         EnableWallRun();
         OnMove();
-        //OnSimpleMove();
     }
 
     private void SpawnCannon(InputAction.CallbackContext context)
@@ -156,14 +137,9 @@ public class ThirdPersonController : MonoBehaviour
         {
             walking.Stop();
             Vector3 cameraForwardAimDir = characterCamera.transform.forward;
-            //cameraForwardAimDir.y = 0;
             cameraForwardAimDir.Normalize();
             Quaternion targetQuaternion = Quaternion.LookRotation(cameraForwardAimDir);
-
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                targetQuaternion,
-                rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetQuaternion, rotationSpeed * Time.deltaTime);
         }
 
         float currentspeed = isSprinting ? moveSpeed * sprintMultiplier : moveSpeed;
@@ -187,11 +163,8 @@ public class ThirdPersonController : MonoBehaviour
             verticalVelocity = -2f;
 
         moveDir.y = verticalVelocity;
-
-       // animator.SetBool("Grounded", controller.isGrounded);
         if (IsDashing)
         {
-            //->convertir el dash a un barrido por el piso! dash con gravedad integrada omaegoto!
             moveDir = transform.forward * dashForce * (dashTimer / dashDuration);
 
             dashTimer -= Time.deltaTime;
@@ -206,18 +179,9 @@ public class ThirdPersonController : MonoBehaviour
     {
         if (!controller.isGrounded) return;
 
-       // animator.SetTrigger("Jump");
         source.GenerateImpulse();
         verticalVelocity = jumpForce;
     }
-
-    /*public void OnSimpleMove()
-    {
-        transform.Rotate(Vector3.up * moveInput.x * rotationSpeed * Time.deltaTime);
-        Vector3 moveDir = transform.forward * moveSpeed * moveInput.y;
-        controller.SimpleMove(moveDir);
-    }*/
-
     private void OnAttack(InputAction.CallbackContext context)
     {
         if (muzzleFlash != null) muzzleFlash.Play(); 
@@ -271,7 +235,6 @@ public class ThirdPersonController : MonoBehaviour
 
     public void EnableWallRun()
     {
-        //->mejor castearlo desde una referenia en los piez
         RaycastHit hit = default;
 
         Physics.Raycast(transform.position, transform.right, out RaycastHit hitRight, rayLenght);
