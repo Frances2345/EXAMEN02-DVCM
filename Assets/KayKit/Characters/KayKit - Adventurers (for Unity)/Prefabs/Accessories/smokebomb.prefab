@@ -155,4 +155,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Granade
   radius: 7
   delay: 6
-  ExplossionGranade: {fileID: 0}
+  ExplossionGranade: {fileID: 191186, guid: 079954accd64b32419ec069129c81273, type: 3}

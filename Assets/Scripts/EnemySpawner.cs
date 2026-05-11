@@ -1,4 +1,3 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -25,13 +24,17 @@ public class EnemySpawner : MonoBehaviour
         {
             counter += Time.deltaTime;
 
-            if (counter > spawnInterval)
+            if (counter >= spawnInterval)
             {
                 int EnemyCheck = GameObject.FindGameObjectsWithTag("Enemy").Length;
 
                 if (EnemyCheck < LimitEmeny)
                 {
                     SpawnEnemy();
+                    counter = 0f;
+                }
+                else
+                {
                     counter = 0f;
                 }
             }
@@ -41,10 +44,10 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemy()
     {
-        GameObject obj = Instantiate(EnemyPrefab, transform.position, Quaternion.identity);
         Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
         Vector3 finalPosition = transform.position + (dir * Random.Range(0, range));
-        obj.transform.position = finalPosition;
+
+        GameObject obj = Instantiate(EnemyPrefab, finalPosition, Quaternion.identity);
 
         EnemyIA ia = obj.GetComponent<EnemyIA>();
         if (ia != null)
