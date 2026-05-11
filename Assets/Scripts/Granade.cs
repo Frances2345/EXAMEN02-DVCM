@@ -17,7 +17,8 @@ public class Granade : MonoBehaviour
     {
         if(ExplossionGranade != null)
         {
-            Instantiate(ExplossionGranade, transform.position , Quaternion.identity);
+            GameObject fx = Instantiate(ExplossionGranade, transform.position, Quaternion.identity);
+            Destroy(fx, 3f);
         }
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
@@ -29,6 +30,7 @@ public class Granade : MonoBehaviour
                 Destroy(hit.gameObject); 
             }
         }
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()

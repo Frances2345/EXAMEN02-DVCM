@@ -37,16 +37,21 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
-    [Button]
+
+
     public void SpawnEnemy()
     {
-        GameObject obj = Instantiate(EnemyPrefab, transform);
-
-        Vector3 origin = transform.position;
+        GameObject obj = Instantiate(EnemyPrefab, transform.position, Quaternion.identity);
         Vector3 dir = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-        Vector3 FinalPosition = origin +( dir * Random.Range(0, range));
+        Vector3 finalPosition = transform.position + (dir * Random.Range(0, range));
+        obj.transform.position = finalPosition;
 
-        obj.transform.position = FinalPosition;
+        EnemyIA ia = obj.GetComponent<EnemyIA>();
+        if (ia != null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null) ia.target = player.transform;
+        }
 
 
     }

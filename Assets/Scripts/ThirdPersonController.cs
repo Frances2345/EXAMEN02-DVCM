@@ -75,7 +75,7 @@ public class ThirdPersonController : MonoBehaviour
         inputs.Enable();
         inputs.Player.SpawnTurret.performed += SpawnCannon;
 
-        inputs.Player.ThrowGranade.started += ctx => ThrowSmt();
+        inputs.Player.ThrowGranade.performed += ctx => ThrowSmt();
 
         inputs.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         inputs.Player.Move.canceled += ctx => moveInput = Vector2.zero;
@@ -113,17 +113,29 @@ public class ThirdPersonController : MonoBehaviour
 
     private void SpawnCannon(InputAction.CallbackContext context)
     {
-        Instantiate(CannonPrefab, CannonSpawnPoint.position, CannonSpawnPoint.rotation);
+        Ray ray = new Ray(transform.position + Vector3.up, transform.forward + Vector3.down * 0.5f);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f))
+        {
+            Instantiate(CannonPrefab, hit.point, Quaternion.identity);
+        }
     }
 
     private void ThrowSmt()
     {
-        GameObject granade = Instantiate(GranadePrefab, transform.position, Quaternion.identity);
-        Vector3 dir = characterCamera.transform.forward;
+        if (GranadePrefab == null) return;
 
-        granade.GetComponent<Rigidbody>().AddForce(dir * throwForce, ForceMode.Impulse);
+        if (CannonSpawnPoint == null) return;
 
-        if (granade == null) return;
+        GameObject granade = Instantiate(GranadePrefab, CannonSpawnPoint.position, Quaternion.identity);
+        Rigidbody rb = granade.GetComponent<Rigidbody>();
+
+        if (rb != null)
+        {
+            Vector3 dir = characterCamera.transform.forward;
+            Vector3 launchForce = (dir + Vector3.up * 0.2f).normalized * throwForce;
+            rb.AddForce(launchForce, ForceMode.Impulse);
+        }
     }
 
     public void OnMove()
@@ -202,6 +214,11 @@ public class ThirdPersonController : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100))
         {
+            if (hit.collider.CompareTag("Enemy"))
+            {
+                Destroy(hit.collider.gameObject);
+            }
+
             LineRenderer line = Instantiate(Rayprefab);
 
             line.positionCount = 2;
